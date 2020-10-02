@@ -1,35 +1,32 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
+import React, {
+    useState,
+    useEffect, 
+} from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
 
-function Lake({name}){
-  return(
-    <div>
-      <h1>Visit {name}!</h1>
-    </div>
-  );
-}
+function GitHubUser({login}) {
+  const [data, setData] = useState(null);
+  userEffect(() => {
+    fetch('https://api.github.com/users/${login}')
+    .then(res => res.json())
+    .then(setData)
+    .catch(console.error);
+  }, []);
 
-function SkiResort({name}){
-  return(
-    <div>
-      <h1>Visit {name}!</h1>
-    </div>
-  );
-}
-
-function App(props) {
-  if (props.season === "summer"){
-  return <Lake name="Jenny Lake" />;
-  } else if (props.season === "winter") {
-
-    return <SkiResort name="JHMR" />;
+  if(data) {
+    return (
+      <div>{JSON.stringify(data)}</div>
+    )
   }
+  return null;
+}
+
+function App() {
+  return <GitHubUser login="chris8D" />;
 }
 
 ReactDOM.render(
-  <App season="winter"/>,
+  <App/>,
   document.getElementById("root")
 );
-
-
